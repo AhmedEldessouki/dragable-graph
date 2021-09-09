@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "@emotion/styled";
 import type { ItemType } from "../types/state";
 import {
   GraphTable,
@@ -7,7 +8,6 @@ import {
   TableTextInput,
 } from "./components/table";
 import Chart from "./components/chart";
-import styled from "@emotion/styled";
 
 type ReducerStateType = Array<ItemType>;
 

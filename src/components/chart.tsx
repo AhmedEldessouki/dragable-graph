@@ -131,8 +131,10 @@ function Chart({
 
   React.useEffect(() => {
     if (!canvasRef.current) return;
+
     const ctx = canvasRef.current.getContext("2d");
     if (!ctx) return;
+
     const squareLength = canvasRef.current.width;
     ctx.clearRect(0, 0, squareLength, squareLength);
     ctx.beginPath();
@@ -146,7 +148,6 @@ function Chart({
     data?.forEach(({ label, x, y }) => {
       draw(ctx, { label, x, y });
     });
-    // ? this disabled role is nothing to worry about, for it help stabilizing useEffect hook
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(data)]);
 
