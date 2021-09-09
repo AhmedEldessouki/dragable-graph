@@ -24,6 +24,10 @@ type AppReducerActionType =
       payload: ReducerStateType;
     };
 
+function handleLocalStorage(params: ReducerStateType): void {
+  window.localStorage.setItem("App_STATE", JSON.stringify(params));
+}
+
 const AppWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -42,10 +46,14 @@ const initialState: ReducerStateType = [
 const appReducer = (state: ReducerStateType, action: AppReducerActionType) => {
   switch (action.type) {
     case "add":
-      return [...state, { label: `new`, x: 50, y: 50 }];
+      const newState = [...state, { label: `new`, x: 50, y: 50 }];
+      handleLocalStorage(newState);
+      return [...newState];
     case "remove":
+      handleLocalStorage(action.payload);
       return [...action.payload];
     case "modify":
+      handleLocalStorage(action.payload);
       return [...action.payload];
 
     default:
@@ -54,7 +62,16 @@ const appReducer = (state: ReducerStateType, action: AppReducerActionType) => {
 };
 
 function App() {
-  const [chartState, dispatch] = React.useReducer(appReducer, initialState);
+  const [chartState, dispatch] = React.useReducer(
+    appReducer,
+    initialState,
+    () => {
+      const fetched = window.localStorage.getItem("App_STATE");
+
+      if (fetched) return JSON.parse(fetched);
+      return initialState;
+    }
+  );
 
   const onModify = React.useCallback(
     (i, data: { label: string } | { x: number } | { y: number }) => {

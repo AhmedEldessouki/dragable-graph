@@ -154,7 +154,7 @@ function Chart({
   const isHovering = React.useCallback(
     (targetedX, targetedY) => {
       if (dragging) return;
-      const index = data.findIndex(
+      const index = data?.findIndex(
         ({ x, y }) =>
           x - 1.5 <= targetedX &&
           x + 1.5 >= targetedX &&
