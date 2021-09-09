@@ -9,6 +9,21 @@ import {
 import Chart from "./components/chart";
 import styled from "@emotion/styled";
 
+type ReducerStateType = Array<ItemType>;
+
+type AppReducerActionType =
+  | {
+      type: "add";
+    }
+  | {
+      type: "remove";
+      payload: ReducerStateType;
+    }
+  | {
+      type: "modify";
+      payload: ReducerStateType;
+    };
+
 const AppWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -18,24 +33,12 @@ const AppWrapper = styled.div`
   align-items: center;
 `;
 
-type AppReducerActionType =
-  | {
-      type: "add";
-    }
-  | {
-      type: "remove";
-      payload: Array<ItemType>;
-    }
-  | {
-      type: "modify";
-      payload: Array<ItemType>;
-    };
-type ReducerStateType = Array<ItemType>;
-const initialState: Array<ItemType> = [
+const initialState: ReducerStateType = [
   { label: "1", x: 20, y: 20 },
   { label: "2", x: 40, y: 40 },
   { label: "3", x: 60, y: 60 },
 ];
+
 const appReducer = (state: ReducerStateType, action: AppReducerActionType) => {
   switch (action.type) {
     case "add":
@@ -76,11 +79,7 @@ function App() {
                 type="text"
                 value={item.label}
                 onChange={(e) => {
-                  item.label = e.currentTarget.value;
-                  dispatch({
-                    type: "modify",
-                    payload: [...chartState],
-                  });
+                  onModify(i, { label: e.currentTarget.value });
                 }}
               />
               <TableNumberInput
@@ -88,12 +87,12 @@ function App() {
                 value={numDisplay(item.x)}
                 onChange={(e) => {
                   if (e.currentTarget.valueAsNumber > 100) {
-                    console.log(e.currentTarget.valueAsNumber);
                     onModify(i, { x: 100 });
                   } else if (e.currentTarget.valueAsNumber < 0) {
                     onModify(i, { x: 0 });
+                  } else {
+                    onModify(i, { x: e.currentTarget.valueAsNumber });
                   }
-                  onModify(i, { x: e.currentTarget.valueAsNumber });
                 }}
               />
               <TableNumberInput
@@ -101,12 +100,12 @@ function App() {
                 value={numDisplay(100 - item.y)}
                 onChange={(e) => {
                   if (e.currentTarget.valueAsNumber > 100) {
-                    console.log(e.currentTarget.valueAsNumber);
-                    onModify(i, { y: 100 });
-                  } else if (e.currentTarget.valueAsNumber < 0) {
                     onModify(i, { y: 0 });
+                  } else if (e.currentTarget.valueAsNumber < 0) {
+                    onModify(i, { y: 100 });
+                  } else {
+                    onModify(i, { y: 100 - e.currentTarget.valueAsNumber });
                   }
-                  onModify(i, { y: e.currentTarget.valueAsNumber });
                 }}
               />
               <td>

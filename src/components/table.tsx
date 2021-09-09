@@ -9,9 +9,6 @@ const Input = styled.input<{ width: string }>`
   padding: 5px 10px;
   width: ${({ width }) => width};
 `;
-const Label = styled.label({
-  width: `100%`,
-});
 
 function TableTextInput({
   name,
@@ -21,9 +18,9 @@ function TableTextInput({
 } & React.InputHTMLAttributes<HTMLInputElement>) {
   return (
     <td>
-      <Label htmlFor={name}>
+      <label htmlFor={name}>
         <Input id={name} name={name} type="text" {...overRide} width="250px" />
-      </Label>
+      </label>
     </td>
   );
 }
@@ -32,22 +29,22 @@ function TableNumberInput({
   name,
   ...overRide
 }: { name: string } & React.InputHTMLAttributes<HTMLInputElement>) {
-  const [isNum, setIsNum] = React.useState(false);
+  const [isNum, setIsNum] = React.useState("text");
   return (
     <td>
-      <Label htmlFor={name}>
+      <label htmlFor={name}>
         <Input
-          onFocus={() => setIsNum(!isNum)}
-          onBlur={() => setIsNum(!isNum)}
+          onFocus={() => setIsNum("number")}
+          onBlur={() => setIsNum("text")}
           id={name}
           name={name}
-          type={isNum ? "number" : "text"}
+          type={isNum}
           min={0}
           max={100}
           {...overRide}
           width="69px"
         />
-      </Label>
+      </label>
     </td>
   );
 }
