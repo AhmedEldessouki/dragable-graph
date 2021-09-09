@@ -1,6 +1,6 @@
+import React from "react";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import React from "react";
 import colors from "../shared/styles";
 
 const Input = styled.input<{ width: string }>`
