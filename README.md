@@ -1,4 +1,6 @@
-# Getting Started with Create React App
+# Magic Quadrant
+[Video Link](https://www.youtube.com/watch?v=RF5xhFNzhYI)
+
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
