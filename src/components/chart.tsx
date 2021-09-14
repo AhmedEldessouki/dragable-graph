@@ -166,14 +166,14 @@ function Chart({
     ctx.stroke();
 
     data?.forEach(({ label, x, y, checked }, i) => {
-      draw(ctx, { label, x, y, checked }, draggableItem === i);
+      draw(
+        ctx,
+        { label, x, y, checked },
+        draggingCursor === "grabbing" && draggableItem === i
+      );
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [JSON.stringify(data)]);
-
-  React.useEffect(() => {
-    return () => {};
-  }, []);
+  }, [JSON.stringify(data), draggableItem, draggingCursor]);
 
   const isHovering = React.useCallback(
     (targetedX, targetedY) => {
