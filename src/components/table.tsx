@@ -79,12 +79,8 @@ const tableHeader = css({
   fontWeight: `normal`,
 });
 
-const LongTh = styled.th`
-  min-width: 272.233px;
-  ${tableHeader}
-`;
-const ShortTh = styled.th`
-  min-width: 90.233px;
+const Th = styled.th<{ minWidth: string }>`
+  min-width: ${({ minWidth }) => minWidth};
   ${tableHeader}
 `;
 
@@ -98,10 +94,11 @@ function GraphTable({ children, onAdd }: GraphTablePropsType) {
       <table>
         <thead>
           <tr>
-            <LongTh>Label</LongTh>
-            <ShortTh>Vision</ShortTh>
-            <ShortTh>Ability</ShortTh>
-            <ShortTh>Delete</ShortTh>
+            <Th minWidth="1"> </Th>
+            <Th minWidth="272.233px">Label</Th>
+            <Th minWidth="90.233px">Vision</Th>
+            <Th minWidth="90.233px">Ability</Th>
+            <Th minWidth="90.233px">Delete</Th>
           </tr>
         </thead>
         <tbody>{children}</tbody>
