@@ -87,14 +87,34 @@ function wrapText(
   ctx.fillText(line, x, y);
 }
 
-function draw(ctx: CanvasRenderingContext2D, { label, x, y }: ItemType) {
+function draw(
+  ctx: CanvasRenderingContext2D,
+  { label, x, y, checked }: ItemType,
+  isMoving: boolean
+) {
   ctx.save();
   ctx.beginPath();
+
+  const newX = x * 4;
+  const newY = y * 4;
+
+  if (isMoving) {
+    ctx.moveTo(newX, 400);
+    ctx.lineTo(newX, newY);
+    ctx.moveTo(0, newY);
+    ctx.lineTo(newX, newY);
+
+    ctx.strokeStyle = "tomato";
+    ctx.setLineDash([8, 10]);
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  }
+
   ctx.textAlign = "left";
   ctx.textBaseline = "top";
+  ctx.fillStyle = checked ? colors.darkBlue : `${colors.darkBlue}10`;
   ctx.font = `13px sans-serif`;
-  ctx.fillStyle = colors.darkBlue;
-  wrapText(ctx, label, x * 4 + 8, y * 4 + 8, 400 - x * 4, 14);
+  wrapText(ctx, label, newX + 8, newY + 8, 400 - newX, 14);
   ctx.scale(4, 4);
   ctx.arc(x, y, 15 / 2 / 4, 0, Math.PI * 2);
   ctx.fill();
@@ -145,11 +165,15 @@ function Chart({
     ctx.strokeStyle = "#E3E4E7";
     ctx.stroke();
 
-    data?.forEach(({ label, x, y }) => {
-      draw(ctx, { label, x, y });
+    data?.forEach(({ label, x, y, checked }, i) => {
+      draw(ctx, { label, x, y, checked }, draggableItem === i);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [JSON.stringify(data)]);
+
+  React.useEffect(() => {
+    return () => {};
+  }, []);
 
   const isHovering = React.useCallback(
     (targetedX, targetedY) => {
