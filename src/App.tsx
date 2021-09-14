@@ -38,15 +38,18 @@ const AppWrapper = styled.div`
 `;
 
 const initialState: ReducerStateType = [
-  { label: "1", x: 20, y: 20 },
-  { label: "2", x: 40, y: 40 },
-  { label: "3", x: 60, y: 60 },
+  { label: "1", x: 20, y: 20, checked: false },
+  { label: "2", x: 40, y: 40, checked: false },
+  { label: "3", x: 60, y: 60, checked: false },
 ];
 
 const appReducer = (state: ReducerStateType, action: AppReducerActionType) => {
   switch (action.type) {
     case "add":
-      const newState = [...state, { label: `new`, x: 50, y: 50 }];
+      const newState = [
+        ...state,
+        { label: `new`, x: 50, y: 50, checked: false },
+      ];
       handleLocalStorage(newState);
       return [...newState];
     case "remove":
@@ -74,7 +77,14 @@ function App() {
   );
 
   const onModify = React.useCallback(
-    (i, data: { label: string } | { x: number } | { y: number }) => {
+    (
+      i,
+      data:
+        | { label: string }
+        | { x: number }
+        | { y: number }
+        | { checked: boolean }
+    ) => {
       chartState.splice(i, 1, { ...chartState[i], ...data });
       dispatch({ type: "modify", payload: chartState });
     },
@@ -91,6 +101,17 @@ function App() {
         <>
           {chartState?.map((item, i) => (
             <tr key={`chart-table-row-${i}`}>
+              <label htmlFor={`checkBox-${i}`}>
+                <input
+                  type="checkbox"
+                  name={`checkBox-${i}`}
+                  id={`checkBox-${i}`}
+                  checked={item.checked}
+                  onChange={(e) => {
+                    onModify(i, { checked: e.target.checked });
+                  }}
+                />
+              </label>
               <TableTextInput
                 name={`label-${i}`}
                 type="text"
